@@ -1,0 +1,126 @@
+#root,
+body,
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  height: 100%;
+  background-image: linear-gradient(#378dc4, Black) !important;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-content {
+  padding-left: 2rem !important;
+  padding-right: 1.5rem !important;
+  padding-top: 2rem;
+
+  .rooms-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1140px;
+    margin: 0 auto;
+    gap: 2rem;
+
+    .room-container {
+      flex-basis: 45%;
+
+      .room-btn {
+        color: #fff;
+        background-color: #6c757d;
+        border-color: #6c757d;
+        height: 7rem;
+        width: 100%;
+        font-size: 2rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.modal {
+  width: 100%;
+  max-width: 1140px !important;
+
+  button {
+    width: 100%;
+    height: 7rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+    margin: 15px 0;
+    font-weight: bold;
+  }
+}
+
+.dr-needed,
+div[class*="Dr. Needed"] {
+  color: white;
+  background-color: #1b6ec2 !important;
+}
+
+.assistant-needed,
+.Assistant.Needed {
+  color: #fff;
+  background-color: #17a2b8 !important;
+}
+
+.patient-arrived,
+.Patient.Arrived {
+  color: #fff;
+  background-color: #28a745 !important;
+}
+
+.active-btn.room {
+  font-size: 1rem;
+}
+
+.active-btn.timer {
+  font-size: 16px;
+}
+
+.pulse-primary {
+  animation: pulse-primary 2s infinite;
+}
+
+@keyframes pulse-primary {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgb(1, 105, 217);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgb(1, 105, 217);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgb(1, 105, 217);
+  }
+}
