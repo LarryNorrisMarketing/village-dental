@@ -36,7 +36,7 @@ function App() {
       if (room.activateReason) {
         // If it has been changed, revert to the original text and clear the timestamp
         await axiosClient.put('rooms', {
-          roomName: selectedRoom,
+          roomName,
           activateTimestamp: null,
           activateReason: null
         });
