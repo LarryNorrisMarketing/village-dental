@@ -16,16 +16,56 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(path.join(__dirname + '/../', 'build')));
 
 const rooms = {
-  'Front Desk': { activateTimestamp: null, activateReason: null },
-  'Hygiene #1': { activateTimestamp: null, activateReason: null },
-  'Hygiene #2': { activateTimestamp: null, activateReason: null },
-  'OP #1': { activateTimestamp: null, activateReason: null },
-  'OP #2': { activateTimestamp: null, activateReason: null },
-  'OP #3': { activateTimestamp: null, activateReason: null },
-  'OP #4': { activateTimestamp: null, activateReason: null },
-  'OP #5': { activateTimestamp: null, activateReason: null },
-  'OP #6': { activateTimestamp: null, activateReason: null },
-  'OP #7': { activateTimestamp: null, activateReason: null }
+  'Front Desk': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'Front Desk'
+  },
+  'Hygiene #1': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'Hygiene #1'
+  },
+  'Hygiene #2': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'Hygiene #2'
+  },
+  'OP #1': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'OP #1'
+  },
+  'OP #2': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'OP #2'
+  },
+  'OP #3': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'OP #3'
+  },
+  'OP #4': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'OP #4'
+  },
+  'OP #5': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'OP #5'
+  },
+  'OP #6': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'OP #6'
+  },
+  'OP #7': {
+    activateTimestamp: null,
+    activateReason: null,
+    name: 'OP #7'
+  }
 };
 
 app.use(express.json());
@@ -47,6 +87,7 @@ app.put('/api/rooms', (req, res) => {
   }
 
   rooms[roomName] = {
+    ...rooms[roomName],
     activateReason,
     activateTimestamp
   };

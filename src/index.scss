@@ -108,6 +108,14 @@ div[class*="Dr. Needed"] {
   animation: pulse-primary 2s infinite;
 }
 
+.pulse-warning {
+  animation: pulse-warning 2s infinite;
+}
+
+.pulse-error {
+  animation: pulse-error 2s infinite;
+}
+
 @keyframes pulse-primary {
   0% {
     transform: scale(0.95);
@@ -122,5 +130,40 @@ div[class*="Dr. Needed"] {
   100% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgb(1, 105, 217);
+  }
+}
+
+@keyframes pulse-warning {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgb(216, 162, 0);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgb(216, 162, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgb(216, 162, 0);
+  }
+}
+
+
+@keyframes pulse-error {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgb(200, 35, 51);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgb(200, 35, 51);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgb(200, 35, 51);
   }
 }
