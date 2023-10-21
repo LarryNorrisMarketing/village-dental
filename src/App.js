@@ -1,7 +1,17 @@
-import { Dialog, DialogContent } from '@mui/material';
+import { Button, Dialog, DialogContent } from '@mui/material';
 import logo from './assets/villagedental_logo.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import drTone from './assets/DrTone.mp3';
+import assistantTone from './assets/AssistantNeeded.mp3';
+import patientTone from './assets/patientArrived.mp3';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
+
+let drAudio = null;
+let assistantAudio = null;
+let patientAudio = null;
 
 const apiBase = process.env.NODE_ENV === 'development' ? 'http://192.168.0.164:8080/api/' : '/api/';
 
@@ -11,23 +21,36 @@ const axiosClient = axios.create({
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [startModalOpen, setStartModalOpen] = useState(true);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomsState, setRoomsState] = useState(null);
+  const [roomTimer, setRoomTimer] = useState(0);
+  const [roomTimerPaused, setRoomTimerPaused] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const prevRoomsState = useRef(null);
+
+  const handleStart = () => {
     async function getInitialState() {
       try {
         const { data } = await axiosClient.get('rooms');
-        setRoomsState(Object.values(data));
+        const theState = Object.values(data);
+
+        prevRoomsState.current = theState;
+        setRoomsState(theState);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching initial state:', error);
       }
     }
 
+    drAudio = new Audio(drTone);
+    assistantAudio = new Audio(assistantTone);
+    patientAudio = new Audio(patientTone);
+
+    setStartModalOpen(false);
     getInitialState();
-  }, []);
+  };
 
   const handleRoomButtonClick = async (roomName) => {
     try {
@@ -68,7 +91,23 @@ function App() {
     async function pollServer() {
       try {
         const { data } = await axiosClient.get('rooms');
-        setRoomsState(Object.values(data));
+
+        prevRoomsState.current.forEach(prevRoomState => {
+          const currentActivateReason = data[prevRoomState.name].activateReason;
+          if (currentActivateReason && !prevRoomState.activateReason) {
+            if (currentActivateReason === 'Dr. Needed') {
+              drAudio.play();
+            } else if (currentActivateReason === 'Assistant Needed') {
+              assistantAudio.play();
+            } else if (currentActivateReason === 'Patient Arrived') {
+              patientAudio.play();
+            }
+          }
+        });
+
+        const newState = Object.values(data);
+        prevRoomsState.current = newState;
+        setRoomsState(newState);
       } catch (error) {
         console.error('Error polling the server:', error);
       }
@@ -80,7 +119,7 @@ function App() {
     }
   }, [loading]);
 
-  if (loading) {
+  if (loading && !startModalOpen) {
     return <div
       style={{
         color: 'white',
@@ -89,6 +128,23 @@ function App() {
       }}>Loading...
     </div>;
   }
+
+  const startRoomTimer = () => {
+    window.roomTimer = setInterval(() => {
+      setRoomTimer(old => old + 1);
+    }, 1000);
+    setRoomTimerPaused(false);
+  };
+
+  const pauseRoomTimer = () => {
+    clearInterval(window.roomTimer);
+    setRoomTimerPaused(true);
+  };
+
+  const resetRoomTimer = () => {
+    clearInterval(window.roomTimer);
+    setRoomTimer(0);
+  };
 
   return (
     <div>
@@ -99,13 +155,49 @@ function App() {
           filter: 'drop-shadow(0px 0px 4px #ffffff)'
         }}
         />
+        <div className='room-timer'>
+          <div style={{ width: 150, overflowWrap: 'break-word' }}>
+            {formatTimer(roomTimer)}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {
+              roomTimer > 0 && !roomTimerPaused ?
+                <Button
+                  color='secondary'
+                  onClick={pauseRoomTimer}
+                  startIcon={<PauseCircleOutlineIcon />}
+                  size='large'
+                  variant='contained'>
+                  Pause
+                </Button>
+                :
+                <Button
+                  color='secondary'
+                  onClick={startRoomTimer}
+                  startIcon={<PlayCircleOutlineIcon />}
+                  size='large'
+                  variant='contained'>
+                  Start
+                </Button>
+            }
+
+            <Button
+              startIcon={<RestartAltIcon />}
+              size='large'
+              color='secondary'
+              onClick={resetRoomTimer}
+              variant='contained'>
+              Reset
+            </Button>
+          </div>
+        </div>
       </header>
 
       <main>
         <div className='main-content'>
           <div className='rooms-container'>
             {
-              roomsState.map(room => {
+              roomsState?.map(room => {
                 const {
                   activateTimestamp,
                   activateReason,
@@ -170,6 +262,26 @@ function App() {
             <button
               onClick={() => handleModalButtonClick('Patient Arrived')}
               className='patient-arrived'>Patient Arrived</button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        PaperProps={{
+          className: 'modal'
+        }}
+        open={startModalOpen}>
+        <DialogContent>
+          <div>
+            <button
+              style={{
+                fontSize: '2.5rem',
+                background: '#1b6ec2',
+                color: 'white'
+              }}
+              onClick={handleStart}>
+              Start
+            </button>
           </div>
         </DialogContent>
 

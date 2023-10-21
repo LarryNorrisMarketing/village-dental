@@ -70,8 +70,6 @@ const rooms = {
 
 app.use(express.json());
 
-
-
 app.get('/api/rooms', (_, res) => {
   return res.json(rooms);
 });
@@ -98,7 +96,6 @@ app.put('/api/rooms', (req, res) => {
 app.get('*', (_, res) => {
   return res.sendFile(path.join(__dirname + '/../', 'build', 'index.html'));
 });
-
 
 const port = process.env.PORT || 8080;
 

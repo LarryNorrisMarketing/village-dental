@@ -24,7 +24,7 @@ body {
 header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .main-content {
@@ -116,6 +116,14 @@ div[class*="Dr. Needed"] {
 
 .pulse-error {
   animation: pulse-error 2s infinite;
+}
+
+.room-timer {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 @keyframes pulse-primary {
