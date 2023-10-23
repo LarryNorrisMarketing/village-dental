@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.82689545.css",
+    "main.js": "/static/js/main.2720eed0.js",
+    "static/media/DrTone.mp3": "/static/media/DrTone.e27547a0dabef4134e7a.mp3",
+    "static/media/villagedental_logo.png": "/static/media/villagedental_logo.3b6976626c696052d865.png",
+    "static/media/AssistantNeeded.mp3": "/static/media/AssistantNeeded.7c5d1241c388d50f8bf0.mp3",
+    "static/media/patientArrived.mp3": "/static/media/patientArrived.cc48a41a4b8bffb7fd48.mp3",
+    "index.html": "/index.html",
+    "main.82689545.css.map": "/static/css/main.82689545.css.map",
+    "main.2720eed0.js.map": "/static/js/main.2720eed0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.82689545.css",
+    "static/js/main.2720eed0.js"
+  ]
+}
