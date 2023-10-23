@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
   }));
 }
 
-app.use(express.static(path.join(__dirname + '/../', 'build')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 const rooms = {
   'Front Desk': {
@@ -94,7 +94,7 @@ app.put('/api/rooms', (req, res) => {
 });
 
 app.get('*', (_, res) => {
-  return res.sendFile(path.join(__dirname + '/../', 'build', 'index.html'));
+  return res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 const port = process.env.PORT || 8080;
