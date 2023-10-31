@@ -7,7 +7,6 @@ import assistantTone from './assets/AssistantNeeded.mp3';
 import patientTone from './assets/patientArrived.mp3';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 
 let drAudio = null;
 let assistantAudio = null;
@@ -24,11 +23,27 @@ function App() {
   const [startModalOpen, setStartModalOpen] = useState(true);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomsState, setRoomsState] = useState(null);
-  const [roomTimer, setRoomTimer] = useState(0);
-  const [roomTimerPaused, setRoomTimerPaused] = useState(false);
+  const [roomTimer, setRoomTimer] = useState(300);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
   const [loading, setLoading] = useState(true);
 
   const prevRoomsState = useRef(null);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  const hours = currentTime.getHours().toString().padStart(2, '0');
+  const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+  const formattedHours = hours % 12 || 12;
 
   const handleStart = () => {
     async function getInitialState() {
@@ -131,19 +146,18 @@ function App() {
 
   const startRoomTimer = () => {
     window.roomTimer = setInterval(() => {
-      setRoomTimer(old => old + 1);
+      setRoomTimer(old => {
+        if (old === 1) {
+          clearInterval(window.roomTimer);
+        }
+        return old - 1;
+      });
     }, 1000);
-    setRoomTimerPaused(false);
-  };
-
-  const pauseRoomTimer = () => {
-    clearInterval(window.roomTimer);
-    setRoomTimerPaused(true);
   };
 
   const resetRoomTimer = () => {
     clearInterval(window.roomTimer);
-    setRoomTimer(0);
+    setRoomTimer(300);
   };
 
   return (
@@ -157,18 +171,21 @@ function App() {
         />
         <div className='room-timer'>
           <div style={{ width: 150, overflowWrap: 'break-word' }}>
-            {formatTimer(roomTimer)}
+            {`${formattedHours}:${minutes}:${seconds}`}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        </div>
+        <div className='room-timer'>
+          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+            {formatTimer(roomTimer)}
             {
-              roomTimer > 0 && !roomTimerPaused ?
+              roomTimer < 300 ?
                 <Button
-                  color='secondary'
-                  onClick={pauseRoomTimer}
-                  startIcon={<PauseCircleOutlineIcon />}
+                  startIcon={<RestartAltIcon />}
                   size='large'
+                  color='secondary'
+                  onClick={resetRoomTimer}
                   variant='contained'>
-                  Pause
+                  Reset
                 </Button>
                 :
                 <Button
@@ -180,15 +197,6 @@ function App() {
                   Start
                 </Button>
             }
-
-            <Button
-              startIcon={<RestartAltIcon />}
-              size='large'
-              color='secondary'
-              onClick={resetRoomTimer}
-              variant='contained'>
-              Reset
-            </Button>
           </div>
         </div>
       </header>
