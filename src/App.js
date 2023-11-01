@@ -179,7 +179,7 @@ function App() {
         }}
         />
         <div className='room-timer'>
-          <div style={{ width: 150, overflowWrap: 'break-word' }}>
+          <div style={{ width: 170 }}>
             {`${formattedHours}:${minutes}:${seconds}`}
           </div>
         </div>

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.82689545.css",
-    "main.js": "/static/js/main.2bdf7eed.js",
+    "main.js": "/static/js/main.f701cb69.js",
     "static/media/DrTone.mp3": "/static/media/DrTone.6d30d605afe2689dd5ea.mp3",
     "static/media/timer-alaram.mp3": "/static/media/timer-alaram.9aeaea384db3968e7d9b.mp3",
     "static/media/villagedental_logo.png": "/static/media/villagedental_logo.3b6976626c696052d865.png",
@@ -9,10 +9,10 @@
     "static/media/patientArrived.mp3": "/static/media/patientArrived.cc48a41a4b8bffb7fd48.mp3",
     "index.html": "/index.html",
     "main.82689545.css.map": "/static/css/main.82689545.css.map",
-    "main.2bdf7eed.js.map": "/static/js/main.2bdf7eed.js.map"
+    "main.f701cb69.js.map": "/static/js/main.f701cb69.js.map"
   },
   "entrypoints": [
     "static/css/main.82689545.css",
-    "static/js/main.2bdf7eed.js"
+    "static/js/main.f701cb69.js"
   ]
 }
