@@ -7,10 +7,14 @@ import assistantTone from './assets/AssistantNeeded.mp3';
 import patientTone from './assets/patientArrived.mp3';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import timerTone from './assets/timer-alaram.mp3';
 
 let drAudio = null;
 let assistantAudio = null;
 let patientAudio = null;
+let timerAudio = null;
+
+const timerSeconds = 5;
 
 const apiBase = process.env.NODE_ENV === 'development' ? 'http://192.168.0.164:8080/api/' : '/api/';
 
@@ -23,7 +27,7 @@ function App() {
   const [startModalOpen, setStartModalOpen] = useState(true);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomsState, setRoomsState] = useState(null);
-  const [roomTimer, setRoomTimer] = useState(300);
+  const [roomTimer, setRoomTimer] = useState(timerSeconds);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const [loading, setLoading] = useState(true);
@@ -62,6 +66,8 @@ function App() {
     drAudio = new Audio(drTone);
     assistantAudio = new Audio(assistantTone);
     patientAudio = new Audio(patientTone);
+    timerAudio = new Audio(timerTone);
+    timerAudio.loop = true;
 
     setStartModalOpen(false);
     getInitialState();
@@ -149,6 +155,7 @@ function App() {
       setRoomTimer(old => {
         if (old === 1) {
           clearInterval(window.roomTimer);
+          timerAudio.play();
         }
         return old - 1;
       });
@@ -157,7 +164,9 @@ function App() {
 
   const resetRoomTimer = () => {
     clearInterval(window.roomTimer);
-    setRoomTimer(300);
+    timerAudio.pause();
+    timerAudio.currentTime = 0;
+    setRoomTimer(timerSeconds);
   };
 
   return (
@@ -178,7 +187,7 @@ function App() {
           <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
             {formatTimer(roomTimer)}
             {
-              roomTimer < 300 ?
+              roomTimer < timerSeconds ?
                 <Button
                   startIcon={<RestartAltIcon />}
                   size='large'
