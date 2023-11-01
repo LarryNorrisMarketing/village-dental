@@ -14,7 +14,7 @@ let assistantAudio = null;
 let patientAudio = null;
 let timerAudio = null;
 
-const timerSeconds = 5;
+const timerSeconds = 300;
 
 const apiBase = process.env.NODE_ENV === 'development' ? 'http://192.168.0.164:8080/api/' : '/api/';
 
